@@ -1,6 +1,31 @@
-<?php require "includes/header.php"; ?>
+<?php
+declare(strict_types=1);
+
+require "includes/header.php";
+require "./config.php";
 
 
+if (key_exists('submit' , $_POST)) {
+  if ($_POST['email'] && $_POST['username'] && $_POST['password']) {
+    $user = $_POST['username'];
+    $pass = $_POST['password'];
+    $email = $_POST['email'];
+
+    $stmnt = $connection->prepare("INSERT INTO users(user, email, pass) VALUE(:user, :email, :pass)");
+    if (    $stmnt->execute([
+      "user" => $user,
+      "email" => $email,
+      "pass" => password_hash($pass, PASSWORD_BCRYPT, ['cost' => 12])
+    ])) {
+      echo "register succisfuly!";
+    }
+
+  }else{
+    echo "All fields are required";
+  }
+}
+
+?>
 
 <main class="form-signin w-50 m-auto">
   <form method="POST" action="register.php">

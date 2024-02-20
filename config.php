@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 // Database config
 $host = "localhost";
-$dbname = "auth-system";
+$dbname = "test";
 $user = "root";
 $pass = "";
 
@@ -16,4 +16,4 @@ try {
 }
 
 
-echo "connected successfully";
+echo "connected successfully <br>";
