@@ -1,8 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
 require "includes/header.php";
 require "./config.php";
+
+if (isset($_SESSION['id'])) {
+  header('Location: index.php');
+}
 
 if (isset($_POST['submit'])) {
   if ($_POST['email'] && $_POST['pass']) {
@@ -10,7 +15,7 @@ if (isset($_POST['submit'])) {
     $pass = $_POST['pass'];
 
     $login = $connection->query("SELECT * FROM users WHERE email = '$email'");
-    
+
     $login->execute();
 
     $data = $login->fetch(PDO::FETCH_ASSOC);
@@ -18,14 +23,18 @@ if (isset($_POST['submit'])) {
     if ($login->rowCount() > 0) {
       if (password_verify($pass, $data['pass'])) {
         echo 'login succisfuly';
-      }else {
+
+        $_SESSION['user'] = $data['user'];
+        $_SESSION['id'] = $data['id'];
+
+        header('Location: index.php');
+      } else {
         echo 'user or password is incorrect';
       }
-    }else {
+    } else {
       echo 'user or password is incorrect';
     }
-    
-  }else{
+  } else {
     echo "All fields are required";
   }
 }
@@ -47,7 +56,7 @@ if (isset($_POST['submit'])) {
     </div>
 
     <button name="submit" class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-    <h6 class="mt-3">Don't have an account  <a href="register.php">Create your account</a></h6>
+    <h6 class="mt-3">Don't have an account <a href="register.php">Create your account</a></h6>
   </form>
 </main>
 <?php require "includes/footer.php"; ?>

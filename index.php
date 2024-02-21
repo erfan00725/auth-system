@@ -1,4 +1,6 @@
-<?php require "includes/header.php"; ?>
+<?php require "includes/header.php";
 
-hello from index
+echo 'hello ' . $_SESSION['user'];
+?>
+
 <?php require "includes/footer.php"; ?>
